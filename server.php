@@ -1,1 +1,0 @@
-<?php exec("node /var/www/html/whiteboard/app.js"); ?>

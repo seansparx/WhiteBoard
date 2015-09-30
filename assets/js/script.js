@@ -64,6 +64,13 @@ $(function(){
 		// Hide the instructions
 		instructions.fadeOut();
 	});
+        
+        canvas.on('mouseup',function(e){
+            // Saving canvas image.
+            var mycanvas = document.getElementById("colors_sketch");
+            var image    = mycanvas.toDataURL("image/png");
+            socket.emit('save_canvas',{ image: image });
+        });
 	
 	doc.bind('mouseup mouseleave',function(){
 		drawing = false;
@@ -98,8 +105,7 @@ $(function(){
 	});
 
 	// Remove inactive clients after 10 seconds of inactivity
-	setInterval(function(){
-		
+	setInterval(function(){		
 		for(ident in clients){
 			if($.now() - clients[ident].updated > 10000){
 				
@@ -110,9 +116,10 @@ $(function(){
 				delete clients[ident];
 				delete cursors[ident];
 			}
-		}
-		
+		}                
 	},10000);
+        
+        
 
 	function drawLine(fromx, fromy, tox, toy, color){
                 ctx.beginPath();
@@ -121,5 +128,5 @@ $(function(){
                 ctx.strokeStyle = color;
 		ctx.stroke();
 	}
-
+        
 });

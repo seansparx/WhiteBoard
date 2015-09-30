@@ -1,4 +1,5 @@
 // Including libraries
+var mysql = require('mysql');
 
 var app = require('http').createServer(handler),
         io = require('socket.io').listen(app),
@@ -33,4 +34,30 @@ io.sockets.on('connection', function (socket) {
         // to everyone except the originating client.
         socket.broadcast.emit('moving', data);
     });
+    
+    socket.on('save_canvas', function (data){
+        save_canvas(data.image);
+    });
 });
+
+// databse connection.
+var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'sparx',
+    database: 'whiteboard'
+});
+
+connection.connect();
+
+function save_canvas(image){
+    var sql = "INSERT INTO canvas SET image='"+image+"', ut=now()";
+    connection.query(sql, function (err, rows, fields){        
+        if(!err){
+            
+        }
+        else {
+            
+        }
+    });
+}
